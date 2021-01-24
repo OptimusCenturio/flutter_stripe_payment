@@ -103,6 +103,12 @@ public class StripePaymentDelegate : NSObject, IDelegate, STPAddCardViewControll
                 intentResponse["status"] = "canceled"
             case .succeeded:
                 intentResponse["status"] = "succeeded"
+            case .requiresCapture:
+                intentResponse["status"] = "requires_capture"
+            /* @unknown default:
+                intentResponse["errorMessage"] = error?.localizedDescription
+                intentResponse["status"] = "failed"
+                break */
             }
             
             result(intentResponse)

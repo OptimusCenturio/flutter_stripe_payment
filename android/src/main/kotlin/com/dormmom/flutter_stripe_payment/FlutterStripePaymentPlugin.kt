@@ -265,9 +265,17 @@ class PaymentActivity : Activity()
                             var paymentResponse = mapOf("status" to "succeeded", "paymentIntentId" to (paymentIntent.id ?: "") )
                             flutterResult?.success(paymentResponse)
                         }
-                        else if (StripeIntent.Status.RequiresPaymentMethod == status) {
+                        else if (status == StripeIntent.Status.RequiresCapture) {
+                            // show success UI
+                            var paymentResponse = mapOf("status" to "requires_capture", "paymentIntentId" to (paymentIntent.id ?: "") )
+                            flutterResult?.success(paymentResponse)
+                        }
+                        else if (status == StripeIntent.Status.RequiresPaymentMethod) {
                             // attempt authentication again or
                             // ask for a new Payment Method
+
+                            var paymentResponse = mapOf("status" to "failed" )
+                            flutterResult?.success(paymentResponse)
                         }
                         else if(status == StripeIntent.Status.Canceled)
                         {
@@ -301,6 +309,10 @@ class PaymentActivity : Activity()
                             flutterResult?.success(paymentResponse)
                         } else if (setupIntent.requiresConfirmation()) {
                             // handle confirmation
+                        }
+                        else {
+                            var paymentResponse = mapOf("status" to "failed" )
+                            flutterResult?.success(paymentResponse)
                         }
                         finish()
                     }
