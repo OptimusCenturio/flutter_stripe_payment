@@ -83,6 +83,8 @@ public class StripePaymentDelegate : NSObject, IDelegate, STPAddCardViewControll
         {
             STPPaymentConfiguration.shared().appleMerchantIdentifier = applePayMerchantIdentifier
         }
+        // Hide zipcode and other billing fields
+        STPPaymentConfiguration.shared().requiredBillingAddressFields = .none
     }
     
     func confirmPaymentIntent(clientSecret: String, paymentMethodId: String, amount: Double, isApplePay: Bool, result: @escaping FlutterResult)
@@ -103,12 +105,6 @@ public class StripePaymentDelegate : NSObject, IDelegate, STPAddCardViewControll
                 intentResponse["status"] = "canceled"
             case .succeeded:
                 intentResponse["status"] = "succeeded"
-            case .requiresCapture:
-                intentResponse["status"] = "requires_capture"
-            /* @unknown default:
-                intentResponse["errorMessage"] = error?.localizedDescription
-                intentResponse["status"] = "failed"
-                break */
             }
             
             result(intentResponse)

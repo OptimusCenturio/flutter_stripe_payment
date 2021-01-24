@@ -163,8 +163,7 @@ class PaymentActivity : Activity()
                         .build())
                 .build())
 
-        stripe = Stripe(this,
-                PaymentConfiguration.getInstance(this).publishableKey)
+        stripe = Stripe(this, PaymentConfiguration.getInstance(this).publishableKey)
 
         var showPaymentForm = intent.getBooleanExtra("showPaymentForm", false)
         var confirmPaymentIntent = intent.getBooleanExtra("confirmPaymentIntent", false)
@@ -175,6 +174,9 @@ class PaymentActivity : Activity()
             setContentView(R.layout.card_input_widget)
 
             cardInputWidget = findViewById(R.id.card_input_widget)
+            // Hide zipcode field
+            cardInputWidget.setShouldShowPostalCode(false)
+
             createPaymentMethod = findViewById(R.id.btn_create_payment_method)
             createPaymentMethod.setOnClickListener {
 
